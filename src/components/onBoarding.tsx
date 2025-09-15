@@ -10,7 +10,7 @@ const Onboarding: React.FC = () => (
       </button>
     </header>
     <main className="flex flex-col items-center justify-center flex-grow px-6 text-center">
-      <div className="flex items-center justify-center p-8 bg-[var(--light-green-bg)] rounded-full mb-8">
+      <div className="flex items-center justify-center p-8 bg-[var(--light-green-bg)] rounded-full mb-6">
         <svg
           className="w-16 h-16 text-[var(--dark-green-text)]"
           fill="none"
