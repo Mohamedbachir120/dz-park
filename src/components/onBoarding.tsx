@@ -46,38 +46,7 @@ const Onboarding: React.FC = () => (
         Commencer
       </button>
     </main>
-    <footer className="w-full">
-      <div className="flex border-t border-gray-100 bg-white">
-        <Link
-          to="/onboarding"
-          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-[var(--dark-green-text)]"
-        >
-          <span className="material-symbols-outlined">home</span>
-          <span className="text-xs font-medium">Accueil</span>
-        </Link>
-        <a
-          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-gray-400"
-          href="#"
-        >
-          <span className="material-symbols-outlined">directions_car</span>
-          <span className="text-xs font-medium">Ma voiture</span>
-        </a>
-        <a
-          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-gray-400"
-          href="#"
-        >
-          <span className="material-symbols-outlined">description</span>
-          <span className="text-xs font-medium">Polices</span>
-        </a>
-        <a
-          className="flex flex-1 flex-col items-center justify-center gap-1 py-3 text-gray-400"
-          href="#"
-        >
-          <span className="material-symbols-outlined">person</span>
-          <span className="text-xs font-medium">Profil</span>
-        </a>
-      </div>
-    </footer>
+  
   </div>
 );
 

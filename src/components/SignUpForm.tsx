@@ -50,12 +50,13 @@ const SignUpForm: React.FC = () => (
           />
         </div>
         <div>
-          <button
-            className="w-full flex justify-center py-4 px-4 border border-transparent rounded-full shadow-sm text-lg font-bold text-white bg-[#108A00] hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            type="submit"
-          >
+        <a
+        className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-auto px-5 py-4 flex-1 bg-[#108A00] text-white text-base font-bold leading-normal tracking-wide shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+       href='/dashboard'
+   
+      >
             Créer un compte
-          </button>
+          </a>
         </div>
       </form>
     </main>

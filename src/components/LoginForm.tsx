@@ -11,7 +11,7 @@ const LoginForm: React.FC = () => (
       <h1 className="text-3xl font-bold tracking-tight text-[#111811]">BDSF Mobile</h1>
       <p className="text-gray-500">Connectez-vous à votre compte pour continuer.</p>
     </div>
-    <form className="flex flex-col space-y-6">
+    <form className="flex flex-col space-y-6" >
       <div className="flex flex-col space-y-2">
         <label className="text-sm font-medium text-[#111811]" htmlFor="email">Email ou nom d'utilisateur</label>
         <input className="form-input" id="email" placeholder="vous@exemple.com" type="text" />
@@ -23,12 +23,13 @@ const LoginForm: React.FC = () => (
         </div>
         <input className="form-input" id="password" placeholder="Entrez votre mot de passe" type="password" />
       </div>
-      <button
+      <a
         className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-auto px-5 py-4 flex-1 bg-[#108A00] text-white text-base font-bold leading-normal tracking-wide shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
-        type="submit"
+       href='/dashboard'
+   
       >
         <span className="truncate">Se connecter</span>
-      </button>
+      </a>
     </form>
 
   </main>
