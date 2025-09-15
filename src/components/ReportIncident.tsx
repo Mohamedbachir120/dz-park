@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const ReportIncident: React.FC = () => {
   const location = useLocation();
   return (
-    <div className="flex-grow">
+    <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-10 flex items-center justify-between bg-white/80 p-4 backdrop-blur-sm">
         <button className="flex size-10 items-center justify-center rounded-full text-[var(--neutral-900)]">
           <span className="material-symbols-outlined">arrow_back</span>
@@ -12,7 +12,7 @@ const ReportIncident: React.FC = () => {
         <h1 className="flex-1 text-center text-lg font-bold text-[var(--neutral-900)]">Signaler un incident</h1>
         <div className="size-10"></div>
       </header>
-      <main className="p-4">
+      <main className="flex-grow overflow-y-auto p-4 pb-24">
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-[var(--neutral-900)]">Détails de l'incident</h2>
           <div className="grid grid-cols-2 gap-4">
@@ -114,7 +114,7 @@ const ReportIncident: React.FC = () => {
           </div>
         </div>
       </main>
-      <footer className="sticky bottom-0 bg-white">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white z-20">
         <div className="px-4 py-3">
           <button className="w-full rounded-full bg-[#108A00] py-3.5 text-base font-bold text-white shadow-lg shadow-green-500/30 hover:bg-green-700">
             Soumettre le rapport

@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const Notifications: React.FC = () => {
   const location = useLocation();
   return (
-    <div className="flex-grow">
+    <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-10 bg-[var(--neutral-0)] shadow-sm">
         <div className="flex items-center p-4">
           <button aria-label="Retour" className="text-[var(--neutral-900)]">
@@ -14,7 +14,7 @@ const Notifications: React.FC = () => {
           <div className="w-10"></div>
         </div>
       </header>
-      <main className="p-4 space-y-4">
+      <main className="flex-grow overflow-y-auto p-4 space-y-4 pb-20">
         <div className="bg-[var(--neutral-0)] rounded-xl shadow-md p-4 flex items-start gap-4">
           <div className="bg-[var(--neutral-100)] rounded-full p-3 text-[#108A00]">
             <span className="material-symbols-outlined">policy</span>
@@ -64,7 +64,7 @@ const Notifications: React.FC = () => {
           </div>
         </div>
       </main>
-      <footer className="sticky bottom-0 bg-[var(--neutral-0)] border-t border-[var(--neutral-200)]">
+      <footer className="fixed bottom-0 left-0 right-0 bg-[var(--neutral-0)] border-t border-[var(--neutral-200)] z-20">
         <nav className="flex justify-around py-2">
           <Link
             to="/dashboard"
@@ -102,7 +102,6 @@ const Notifications: React.FC = () => {
             <span className="text-xs font-medium">Profil</span>
           </Link>
         </nav>
-        <div className="h-safe-area-bottom bg-[var(--neutral-0)]"></div>
       </footer>
     </div>
   );

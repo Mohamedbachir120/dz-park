@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Profile: React.FC = () => {
   const location = useLocation();
   return (
-    <div className="flex-1">
+    <div className="flex flex-col min-h-screen">
       <header className="flex items-center bg-white p-4 justify-between sticky top-0 z-10 border-b border-[var(--light-green-bg)]">
         <button className="text-[var(--dark-green-text)] flex size-8 shrink-0 items-center justify-center rounded-full hover:bg-gray-100">
           <span className="material-symbols-outlined">arrow_back</span>
@@ -13,7 +12,7 @@ const Profile: React.FC = () => {
         <h1 className="text-[var(--dark-green-text)] text-lg font-bold leading-tight flex-1 text-center">Profil</h1>
         <div className="size-8"></div>
       </header>
-      <main className="p-4 sm:p-6">
+      <main className="flex-grow overflow-y-auto p-4 sm:p-6 pb-20">
         <div className="flex w-full flex-col gap-6 items-center">
           <div className="flex gap-4 flex-col items-center">
             <div
@@ -114,7 +113,7 @@ const Profile: React.FC = () => {
           </div>
         </div>
       </main>
-      <footer className="sticky bottom-0 bg-white border-t border-[var(--light-green-bg)] z-10 pb-2">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--light-green-bg)] z-20 pb-2">
         <nav className="flex justify-around items-center pt-2">
           <Link
             to="/dashboard"

@@ -1,18 +1,17 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Refund: React.FC = () => {
   const location = useLocation();
   return (
-    <div className="flex-grow">
-      <header className="flex items-center p-4">
+    <div className="flex flex-col min-h-screen">
+      <header className="sticky top-0 z-10 flex items-center p-4 bg-white">
         <button className="text-[#111811] flex size-10 shrink-0 items-center justify-center rounded-full bg-gray-100">
           <span className="material-symbols-outlined">arrow_back</span>
         </button>
         <h1 className="text-[#111811] text-lg font-bold flex-1 text-center pr-10">Statut du remboursement</h1>
       </header>
-      <main className="p-4">
+      <main className="flex-grow overflow-y-auto p-4 pb-20">
         <section className="mb-6">
           <h2 className="text-[#111811] text-2xl font-bold tracking-tight mb-4">Vérifier le statut du remboursement</h2>
           <div className="flex items-center gap-2">
@@ -58,8 +57,8 @@ const Refund: React.FC = () => {
           </div>
         </section>
       </main>
-      <footer className="sticky bottom-0 bg-white">
-        <div className="flex justify-around border-t border-gray-100 px-2 pt-2 pb-4">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 z-20">
+        <div className="flex justify-around px-2 pt-2 pb-4">
           <Link
             to="/dashboard"
             className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/dashboard' ? 'text-[#108A00]' : 'text-gray-500'}`}

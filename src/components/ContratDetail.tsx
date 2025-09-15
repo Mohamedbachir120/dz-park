@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 const ContractDetails: React.FC = () => {
   const location = useLocation();
   return (
-    <div className="flex-grow">
+    <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-10 flex items-center justify-between bg-[var(--neutral-0)] p-4 pb-3">
         <button className="flex size-10 items-center justify-center rounded-full text-[var(--neutral-900)]">
           <span className="material-symbols-outlined text-2xl">arrow_back</span>
@@ -12,7 +12,7 @@ const ContractDetails: React.FC = () => {
         <h1 className="text-lg font-bold text-[var(--neutral-900)]">Détails du contrat</h1>
         <div className="size-10"></div>
       </header>
-      <main className="p-4 space-y-6">
+      <main className="flex-grow overflow-y-auto p-4 space-y-6 pb-20">
         <div className="rounded-xl bg-white shadow-sm ring-1 ring-[var(--neutral-200)]/50 p-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
@@ -63,7 +63,7 @@ const ContractDetails: React.FC = () => {
           </div>
         </div>
       </main>
-      <footer className="sticky bottom-0 bg-white border-t border-[var(--neutral-200)]/80 pb-3 pt-2 px-2">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--neutral-200)]/80 pb-3 pt-2 px-2 z-20">
         <nav className="flex justify-around">
           <Link
             to="/dashboard"
