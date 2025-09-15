@@ -4,14 +4,14 @@ import { Link, useLocation } from 'react-router-dom';
 const Dashboard: React.FC = () => {
   const location = useLocation();
   return (
-    <div className="flex-grow">
+    <div className="flex flex-col min-h-screen">
       <div className="flex items-center bg-white p-4 pb-3 justify-between sticky top-0 z-10">
         <h1 className="text-2xl font-bold text-[#1D2939]">Tableau de bord</h1>
         <button className="text-[#1D2939] p-2 rounded-full hover:bg-gray-100">
           <span className="material-symbols-outlined">settings</span>
         </button>
       </div>
-      <div className="p-4 space-y-6">
+      <div className="flex-grow overflow-y-auto p-4 space-y-6 pb-20">
         <div>
           <h2 className="text-lg font-semibold text-[#1D2939] mb-3">Statut du contrat</h2>
           <div className="rounded-xl bg-white p-4 shadow-sm border border-gray-200 flex items-center gap-4">
@@ -53,7 +53,7 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
-      <footer className="sticky bottom-0 bg-white border-t border-gray-200">
+      <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-20">
         <div className="flex justify-around items-center px-2 py-2">
           <Link
             to="/dashboard"
