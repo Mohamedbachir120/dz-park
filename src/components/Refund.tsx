@@ -27,7 +27,11 @@ const Refund: React.FC = () => {
         <section className="rounded-xl overflow-hidden shadow-sm border border-gray-100">
           <div
             className="bg-cover bg-center flex flex-col items-start justify-end p-4"
-            style={{ backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url("/images/refund-bg.jpg")' }}
+            // --- MODIFIED LINE ---
+            style={{
+              backgroundImage: 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 50%), url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop")',
+            }}
+            // ---------------------
           >
             <div className="flex items-center gap-3 mb-24">
               <div className="bg-[#108A00] p-2 rounded-full text-white">

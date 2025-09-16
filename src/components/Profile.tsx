@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
           <div className="flex gap-4 flex-col items-center">
             <div
               className="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32 border-2 border-white shadow-md"
-              style={{ backgroundImage: 'url("/images/profile-pic.jpg")' }}
+              style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=256&h=256&auto=format&fit=crop")' }}
             ></div>
             <div className="flex flex-col items-center justify-center">
               <p className="text-[var(--dark-green-text)] text-2xl font-bold leading-tight">Ethan Carter</p>
@@ -35,6 +35,7 @@ const Profile: React.FC = () => {
             <h2 className="text-[var(--dark-green-text)] text-xl font-bold leading-tight mb-4">Détails personnels</h2>
           </div>
           <div className="bg-gray-50 rounded-xl p-4 space-y-4">
+            {/* Personal details sections */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="bg-green-100 p-2 rounded-full">
@@ -75,7 +76,7 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8">
+        <div className="mt-8 mb-6">
           <div className="flex justify-between items-center px-4 mb-4">
             <h2 className="text-[var(--dark-green-text)] text-xl font-bold leading-tight">Véhicules assurés</h2>
             <button className="text-[#108A00] text-sm font-semibold flex items-center gap-1">
@@ -87,7 +88,9 @@ const Profile: React.FC = () => {
             <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl">
               <div
                 className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0"
-                style={{ backgroundImage: 'url("/images/toyota-camry.jpg")' }}
+                // --- MODIFIED & VERIFIED URL #1 ---
+                style={{ backgroundImage: 'url("https://image.elite-auto.fr/visuel/TOYOTA/toyota_22camryhevpremsd8fb_angularfront.png")' }}
+                // ------------------------------------
               ></div>
               <div className="flex-1">
                 <p className="text-[var(--dark-green-text)] text-base font-bold line-clamp-1">Toyota Camry</p>
@@ -100,7 +103,9 @@ const Profile: React.FC = () => {
             <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl">
               <div
                 className="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16 shrink-0"
-                style={{ backgroundImage: 'url("/images/honda-civic.jpg")' }}
+                // --- MODIFIED & VERIFIED URL #2 ---
+                style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=256&h=256&auto=format&fit=crop")' }}
+                // ------------------------------------
               ></div>
               <div className="flex-1">
                 <p className="text-[var(--dark-green-text)] text-base font-bold line-clamp-1">Honda Civic</p>
@@ -114,42 +119,13 @@ const Profile: React.FC = () => {
         </div>
       </main>
       <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--light-green-bg)] z-20 pb-2">
+        {/* Footer navigation */}
         <nav className="flex justify-around items-center pt-2">
-          <Link
-            to="/dashboard"
-            className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/dashboard' ? 'text-[#108A00]' : 'text-gray-500'}`}
-          >
-            <span className="material-symbols-outlined">home</span>
-            <p className="text-xs font-medium">Tableau de bord</p>
-          </Link>
-          <Link
-            to="/report-incident"
-            className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/report-incident' ? 'text-[#108A00]' : 'text-gray-500'}`}
-          >
-            <span className="material-symbols-outlined">description</span>
-            <p className="text-xs font-medium">Signaler</p>
-          </Link>
-          <Link
-            to="/refund"
-            className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/refund' ? 'text-[#108A00]' : 'text-gray-500'}`}
-          >
-            <span className="material-symbols-outlined">shield</span>
-            <p className="text-xs font-medium">Police</p>
-          </Link>
-          <Link
-            to="/notifications"
-            className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/notifications' ? 'text-[#108A00]' : 'text-gray-500'}`}
-          >
-            <span className="material-symbols-outlined">notifications</span>
-            <p className="text-xs font-medium">Notifications</p>
-          </Link>
-          <Link
-            to="/profile"
-            className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/profile' ? 'text-[#108A00]' : 'text-gray-500'}`}
-          >
-            <span className="material-symbols-outlined filled">person</span>
-            <p className="text-xs font-bold">Profil</p>
-          </Link>
+          <Link to="/dashboard" className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/dashboard' ? 'text-[#108A00]' : 'text-gray-500'}`}><span className="material-symbols-outlined">home</span><p className="text-xs font-medium">Tableau de bord</p></Link>
+          <Link to="/report-incident" className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/report-incident' ? 'text-[#108A00]' : 'text-gray-500'}`}><span className="material-symbols-outlined">description</span><p className="text-xs font-medium">Signaler</p></Link>
+          <Link to="/refund" className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/refund' ? 'text-[#108A00]' : 'text-gray-500'}`}><span className="material-symbols-outlined">shield</span><p className="text-xs font-medium">Police</p></Link>
+          <Link to="/notifications" className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/notifications' ? 'text-[#108A00]' : 'text-gray-500'}`}><span className="material-symbols-outlined">notifications</span><p className="text-xs font-medium">Notifications</p></Link>
+          <Link to="/profile" className={`flex flex-col items-center justify-end gap-1 ${location.pathname === '/profile' ? 'text-[#108A00]' : 'text-gray-500'}`}><span className="material-symbols-outlined filled">person</span><p className="text-xs font-bold">Profil</p></Link>
         </nav>
       </footer>
     </div>
