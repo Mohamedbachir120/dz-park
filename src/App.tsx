@@ -7,7 +7,8 @@ import SignUpForm from './pages/SignUpForm';
  import Dashboard from './pages/Dashboard';
 import Notifications from './components/Notifications';
 import { LandingPage } from './pages/Landing';
-  
+import { ReservationPage } from './pages/ReservationPage';
+
 
 const App: React.FC = () => (
   <BrowserRouter>
@@ -19,6 +20,7 @@ const App: React.FC = () => (
           <Route path="/signup" element={<SignUpForm />} />
           <Route path="/refund" element={<Refund />} />
            <Route path="/" element={<LandingPage />} />
+           <Route path="/reservation" element={<ReservationPage />} />
     
           <Route path="/notifications" element={<Notifications />} />
          </Routes>
