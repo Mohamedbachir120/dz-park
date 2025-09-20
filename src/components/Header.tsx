@@ -411,8 +411,10 @@ export const Header: React.FC = () => {
 
         {/* Service Request Form Modal */}
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto animate-slide-in">
+          // 1. Removed "my-5" and increased padding from p-4 to p-6 for more space
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-6">
+            {/* 2. Changed max-h-screen to max-h-full to respect the parent's padding */}
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-full overflow-y-auto animate-slide-in">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 flex items-center">
