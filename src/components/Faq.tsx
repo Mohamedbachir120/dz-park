@@ -1,4 +1,4 @@
-import { FaqItemProps } from "../custom types/icons";
+import { FaqItemProps } from "../types";
 import { Icon } from "../pages/Landing";
 import { useState } from "react";
 

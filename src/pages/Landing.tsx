@@ -8,7 +8,7 @@ import { Hero } from '../components/Hero';
 import { OtherServices } from '../components/OtherServices';
 import { Reviews } from '../components/Reviews';
 import { Security } from '../components/Security';
-import { FaqItemProps, IconProps } from 'custom types/icons';
+import { FaqItemProps, IconProps } from 'types';
 import React, { useState } from 'react';
 
 
