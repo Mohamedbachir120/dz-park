@@ -8,6 +8,12 @@ export const dashboardService = {
   getClients: (): Promise<Client[]> =>
     apiClient.get<Client[]>('/api/dashboard/clients'),
 
+  
+  getBonDeCommande: (reservationId: string): Promise<Blob> =>
+    apiClient.get<Blob>(`/api/dashboard/reservations/${reservationId}/bon-de-commande`, {
+      responseType: 'blob'
+    }),
+  
   getStats: async (): Promise<DashboardStats> => {
     const [reservations, clients] = await Promise.all([
       dashboardService.getReservations(),

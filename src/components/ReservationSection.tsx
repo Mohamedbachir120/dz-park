@@ -226,6 +226,9 @@ export const ReservationsSection: React.FC = () => {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Prix
                                 </th>
+                                <th>
+                                    Bon de commande
+                                </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Statut
                                 </th>
@@ -259,6 +262,27 @@ export const ReservationsSection: React.FC = () => {
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="text-sm text-gray-900">{reservation.carImmatriculation}</div>
                                         <div className="text-sm text-gray-500">{reservation.parkingType}</div>
+                                    </td>
+                                    <td>
+                                        <button onClick={(e)=>{
+                                            e.preventDefault();
+                                            dashboardService.getBonDeCommande(reservation.id)
+                                            .then((blob) => {
+                                                // Create a URL for the blob
+                                                const url = window.URL.createObjectURL(new Blob([blob]));
+                                                const link = document.createElement('a');
+                                                link.href = url;
+                                                link.setAttribute('download', `BonDeCommande_${reservation.reservationNumber}.pdf`);
+                                                document.body.appendChild(link);
+                                                link.click();
+                                                link.parentNode?.removeChild(link);
+                                            })
+                                            .catch((error) => {
+                                                console.error('Error downloading the file:', error);
+                                                toast.error('Erreur lors du téléchargement du bon de commande.');
+                                            });
+
+                                        }}> Télécharger le pdf</button>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {formatPrice(reservation.totalPrice)}

@@ -9,7 +9,8 @@ class ApiClient {
   
     private async request<T>(
       endpoint: string, 
-      options: RequestInit = {}
+      options: RequestInit = {},
+      responseType: 'json' | 'blob' = 'json'
     ): Promise<T> {
       const url = `${this.baseURL}${endpoint}`;
       
@@ -18,7 +19,7 @@ class ApiClient {
       
       const config: RequestInit = {
         headers: {
-          'Content-Type': 'application/json',
+          ...(responseType === 'json' && { 'Content-Type': 'application/json' }),
           ...(token && { Authorization: `Bearer ${token}` }),
           ...options.headers,
         },
@@ -32,12 +33,16 @@ class ApiClient {
         throw new Error(error || `HTTP error! status: ${response.status}`);
       }
       
+      if (responseType === 'blob') {
+        return response.blob() as Promise<T>;
+      }
+      
       return response.json();
     }
   
-    // GET request
-    async get<T>(endpoint: string): Promise<T> {
-      return this.request<T>(endpoint, { method: 'GET' });
+    // GET request with optional blob support
+    async get<T>(endpoint: string, options?: { responseType?: 'json' | 'blob' }): Promise<T> {
+      return this.request<T>(endpoint, { method: 'GET' }, options?.responseType || 'json');
     }
   
     // POST request
@@ -60,6 +65,6 @@ class ApiClient {
     async delete<T>(endpoint: string): Promise<T> {
       return this.request<T>(endpoint, { method: 'DELETE' });
     }
-  }
+}
   
-  export const apiClient = new ApiClient();
+export const apiClient = new ApiClient();

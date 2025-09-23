@@ -34,6 +34,7 @@ export interface Reservation {
   withFuel: boolean;
   isOversized: boolean;
   carImmatriculation: string;
+  bonDeCommandePath: string;
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   totalPrice: number;
   clientId: string;
