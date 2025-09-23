@@ -10,7 +10,7 @@ export const dashboardService = {
 
   
   getBonDeCommande: (reservationId: string): Promise<Blob> =>
-    apiClient.get<Blob>(`/api/dashboard/reservations/${reservationId}/bon-de-commande`, {
+    apiClient.get<Blob>(`/api/dashboard/download-bon/${reservationId}`, {
       responseType: 'blob'
     }),
   
