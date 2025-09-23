@@ -264,7 +264,9 @@ export const ReservationsSection: React.FC = () => {
                                         <div className="text-sm text-gray-500">{reservation.parkingType}</div>
                                     </td>
                                     <td>
-                                        <button onClick={(e)=>{
+                                        <button
+                                        className='btn bg-primary p-2 text-white rounded-lg hover:bg-green-600'
+                                        onClick={(e)=>{
                                             e.preventDefault();
                                             dashboardService.getBonDeCommande(reservation.id)
                                             .then((blob) => {
@@ -282,7 +284,9 @@ export const ReservationsSection: React.FC = () => {
                                                 toast.error('Erreur lors du téléchargement du bon de commande.');
                                             });
 
-                                        }}> Télécharger le pdf</button>
+                                        }}> 
+                                        
+                                        Télécharger le pdf</button>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                         {formatPrice(reservation.totalPrice)}

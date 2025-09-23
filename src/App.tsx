@@ -19,6 +19,8 @@ export const App: React.FC = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<LoginForm />} />
+          <Route path="/reservation" element={<ReservationPage />} />
+
           <Route 
             path="/dashboard" 
             element={
