@@ -254,9 +254,22 @@ export const ReservationsSection: React.FC = () => {
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <div>
+                                            {/* if current day equal date or date retour change text color to green to red and add signal message */}
+                                            {(new Date().getDate() === new Date(reservation.dateAller).getDate() || new Date().getDate() === new Date(reservation.dateRetour).getDate()) ? (
+                                                <div>
+                                                    <div className="text-green-600 font-semibold">  Aller: {formatDate(reservation.dateAller)}</div>
+                                                    <div className="text-red-600 font-semibold">  Retour: {formatDate(reservation.dateRetour)} </div>
+                                                
+                                                </div>
+                                         
+                                            )  :  <div>
+                                            <div className="text-gray-900 font-semibold">  Aller: {formatDate(reservation.dateAller)}</div>
+                                            <div className="text-gray-900 font-semibold">  Retour: {formatDate(reservation.dateRetour)} </div>
+                                        
+                                        </div>}
+                                        <div className="mt-1 space-y-1">
                                             <div>Aller: {formatDate(reservation.dateAller)}</div>
-                                            <div>Retour: {formatDate(reservation.dateRetour)}</div>
+                                            <div></div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
