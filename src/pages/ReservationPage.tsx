@@ -1,5 +1,65 @@
 import React, { useState, useEffect, ChangeEvent, FormEvent, ReactNode } from 'react';
 
+// Toast Component
+const Toast: React.FC<{
+  message: string;
+  type: 'success' | 'error';
+  onClose: () => void;
+}> = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className={`fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-md transform transition-all duration-300 ${
+      type === 'success' 
+        ? 'bg-green-500 text-white' 
+        : 'bg-red-500 text-white'
+    }`}>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <div className="mr-3">
+            {type === 'success' ? (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            )}
+          </div>
+          <div>
+            <p className="font-medium">{message}</p>
+          </div>
+        </div>
+        <button
+          onClick={onClose}
+          className="ml-4 text-white hover:text-gray-200 focus:outline-none"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Loading Spinner Component
+const LoadingSpinner: React.FC = () => (
+  <div className="inline-flex items-center">
+    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+    Envoi en cours...
+  </div>
+);
+
 // Updated interfaces
 interface FormData {
   dateAller: string; 
@@ -25,6 +85,12 @@ interface FormErrors {
   email?: string; 
   phoneNumber?: string; 
   carImmatriculation?: string;
+}
+
+interface Toast {
+  id: number;
+  message: string;
+  type: 'success' | 'error';
 }
 
 const Section: React.FC<{ title: string; children: ReactNode; className?: string }> = ({ 
@@ -77,9 +143,6 @@ const ParkingCard: React.FC<{
             : 'Couvert et sécurisé, protection optimale'
           }
         </p>
-        {/* <div className={`text-xl font-bold ${selected ? 'text-indigo-600' : 'text-gray-700'}`}>
-          {isExternal ? '500' : '600'} DZD/jour
-        </div> */}
       </div>
     </div>
   );
@@ -145,9 +208,6 @@ const CleaningCard: React.FC<{
         <p className="text-sm text-gray-600 mb-3 h-12">
           {option.description}
         </p>
-        {/* <div className={`text-xl font-bold ${selected ? `text-${option.color}-600` : 'text-gray-700'}`}>
-          {option.price > 0 ? `+${option.price} DZD` : 'Gratuit'}
-        </div> */}
       </div>
     </div>
   );
@@ -189,7 +249,6 @@ const FuelCard: React.FC<{
       </div>
     );
   };
-  
 
 export const ReservationPage: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({ 
@@ -209,6 +268,36 @@ export const ReservationPage: React.FC = () => {
   
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
+  // Toast functions
+  const addToast = (message: string, type: 'success' | 'error') => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, message, type }]);
+  };
+
+  const removeToast = (id: number) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id));
+  };
+
+  // API call function
+  const submitReservation = async (data: FormData) => {
+    const response = await fetch('/api/reservations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Une erreur est survenue lors de l\'envoi');
+    }
+
+    return response.json();
+  };
 
   useEffect(() => {
     if (formData.dateAller && formData.dateRetour) {
@@ -231,6 +320,7 @@ export const ReservationPage: React.FC = () => {
           full: 1200
         };
         finalPrice += cleaningPrices[formData.cleaningType];
+        finalPrice += 500; // Deposit fee
         
         if (formData.withFuel) finalPrice += 1000;
         setTotalPrice(finalPrice);
@@ -257,11 +347,44 @@ export const ReservationPage: React.FC = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => { 
-    e.preventDefault(); 
-    if (validateForm()) { 
-      alert(`Demande soumise! Total: ${totalPrice} DZD.`); 
-      window.location.href = '/'; 
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      addToast('Veuillez corriger les erreurs dans le formulaire', 'error');
+      return;
+    }
+
+    setIsLoading(true);
+    
+    try {
+      const result = await submitReservation(formData);
+      addToast(`Réservation créée avec succès! Numéro: ${result.reservation.reservationNumber}`, 'success');
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        setFormData({
+          dateAller: '', 
+          flightNumberAller: '', 
+          dateRetour: '', 
+          flightNumberRetour: '', 
+          parkingType: 'externe', 
+          cleaningType: 'none',
+          withFuel: false, 
+          isOversized: false, 
+          fullName: '', 
+          email: '', 
+          phoneNumber: '+213', 
+          carImmatriculation: ''
+        });
+        setFormErrors({});
+        // Optional: redirect to success page
+        // window.location.href = '/success';
+      }, 2000);
+      
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Une erreur inattendue est survenue';
+      addToast(errorMessage, 'error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -298,6 +421,10 @@ export const ReservationPage: React.FC = () => {
           <div className="flex justify-between">
             <span>Durée:</span>
             <span className="font-medium">{days} jour{days > 1 ? 's' : ''}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Frais de déplacement aller / retour :</span>
+            <span className="font-medium">500 DZD</span>
           </div>
           <div className="flex justify-between">
             <span>Parking {formData.parkingType}:</span>
@@ -345,6 +472,18 @@ export const ReservationPage: React.FC = () => {
         .animate-slide-in-page{animation:slideInPage .5s ease-out forwards}
       `}</style>
       
+      {/* Toast Container */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            type={toast.type}
+            onClose={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
+      
       {totalPrice > 0 && (
         <div className="lg:hidden fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm z-40 p-4 shadow-md">
           <div className="flex justify-between items-center max-w-2xl mx-auto">
@@ -369,8 +508,9 @@ export const ReservationPage: React.FC = () => {
                       type="datetime-local" 
                       name="dateAller" 
                       value={formData.dateAller} 
-                      onChange={handleInputChange} 
-                      className={`${inputStyles} ${formErrors.dateAller && errorBorder}`} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
+                      className={`${inputStyles} ${formErrors.dateAller && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.dateAller && <p className="text-red-500 text-sm mt-1">{formErrors.dateAller}</p>}
                   </div>
@@ -380,9 +520,10 @@ export const ReservationPage: React.FC = () => {
                       type="text" 
                       name="flightNumberAller" 
                       value={formData.flightNumberAller} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       placeholder="Ex: AH1234" 
-                      className={`${inputStyles} ${formErrors.flightNumberAller && errorBorder}`} 
+                      className={`${inputStyles} ${formErrors.flightNumberAller && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.flightNumberAller && <p className="text-red-500 text-sm mt-1">{formErrors.flightNumberAller}</p>}
                   </div>
@@ -392,8 +533,9 @@ export const ReservationPage: React.FC = () => {
                       type="datetime-local" 
                       name="dateRetour" 
                       value={formData.dateRetour} 
-                      onChange={handleInputChange} 
-                      className={`${inputStyles} ${formErrors.dateRetour && errorBorder}`} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
+                      className={`${inputStyles} ${formErrors.dateRetour && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.dateRetour && <p className="text-red-500 text-sm mt-1">{formErrors.dateRetour}</p>}
                   </div>
@@ -403,9 +545,10 @@ export const ReservationPage: React.FC = () => {
                       type="text" 
                       name="flightNumberRetour" 
                       value={formData.flightNumberRetour} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       placeholder="Ex: AH1235" 
-                      className={`${inputStyles} ${formErrors.flightNumberRetour && errorBorder}`} 
+                      className={`${inputStyles} ${formErrors.flightNumberRetour && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.flightNumberRetour && <p className="text-red-500 text-sm mt-1">{formErrors.flightNumberRetour}</p>}
                   </div>
@@ -422,12 +565,12 @@ export const ReservationPage: React.FC = () => {
                       <ParkingCard
                         type="externe"
                         selected={formData.parkingType === 'externe'}
-                        onClick={() => updateFormData('parkingType', 'externe')}
+                        onClick={() => !isLoading && updateFormData('parkingType', 'externe')}
                       />
                       <ParkingCard
                         type="interne"
                         selected={formData.parkingType === 'interne'}
-                        onClick={() => updateFormData('parkingType', 'interne')}
+                        onClick={() => !isLoading && updateFormData('parkingType', 'interne')}
                       />
                     </div>
                   </div>
@@ -439,22 +582,22 @@ export const ReservationPage: React.FC = () => {
                       <CleaningCard
                         type="none"
                         selected={formData.cleaningType === 'none'}
-                        onClick={() => updateFormData('cleaningType', 'none')}
+                        onClick={() => !isLoading && updateFormData('cleaningType', 'none')}
                       />
                       <CleaningCard
                         type="exterior"
                         selected={formData.cleaningType === 'exterior'}
-                        onClick={() => updateFormData('cleaningType', 'exterior')}
+                        onClick={() => !isLoading && updateFormData('cleaningType', 'exterior')}
                       />
                       <CleaningCard
                         type="interior"
                         selected={formData.cleaningType === 'interior'}
-                        onClick={() => updateFormData('cleaningType', 'interior')}
+                        onClick={() => !isLoading && updateFormData('cleaningType', 'interior')}
                       />
                       <CleaningCard
                         type="full"
                         selected={formData.cleaningType === 'full'}
-                        onClick={() => updateFormData('cleaningType', 'full')}
+                        onClick={() => !isLoading && updateFormData('cleaningType', 'full')}
                       />
                     </div>
                   </div>
@@ -464,18 +607,19 @@ export const ReservationPage: React.FC = () => {
                     <label className={labelStyles}>Service de carburant</label>
                     <FuelCard
                       selected={formData.withFuel}
-                      onClick={() => updateFormData('withFuel', !formData.withFuel)}
+                      onClick={() => !isLoading && updateFormData('withFuel', !formData.withFuel)}
                     />
                   </div>
 
                   {/* Oversized Vehicle Checkbox */}
-                  <div className="flex items-start p-4 bg-gray-50 rounded-lg border">
+                  <div className={`flex items-start p-4 bg-gray-50 rounded-lg border ${isLoading ? 'opacity-50' : ''}`}>
                     <input 
                       id="isOversized" 
                       type="checkbox" 
                       name="isOversized" 
                       checked={formData.isOversized} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       className="h-5 w-5 rounded mt-0.5 text-indigo-600 focus:ring-indigo-500 border-gray-300" 
                     />
                     <label htmlFor="isOversized" className="ml-3 text-gray-700">
@@ -493,9 +637,10 @@ export const ReservationPage: React.FC = () => {
                       type="text" 
                       name="fullName" 
                       value={formData.fullName} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       placeholder="Votre nom" 
-                      className={`${inputStyles} ${formErrors.fullName && errorBorder}`} 
+                      className={`${inputStyles} ${formErrors.fullName && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.fullName && <p className="text-red-500 text-sm mt-1">{formErrors.fullName}</p>}
                   </div>
@@ -505,9 +650,10 @@ export const ReservationPage: React.FC = () => {
                       type="email" 
                       name="email" 
                       value={formData.email} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       placeholder="exemple@email.com" 
-                      className={`${inputStyles} ${formErrors.email && errorBorder}`} 
+                      className={`${inputStyles} ${formErrors.email && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.email && <p className="text-red-500 text-sm mt-1">{formErrors.email}</p>}
                   </div>
@@ -517,9 +663,10 @@ export const ReservationPage: React.FC = () => {
                       type="tel" 
                       name="phoneNumber" 
                       value={formData.phoneNumber} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       placeholder="+213XXXXXXXXX" 
-                      className={`${inputStyles} ${formErrors.phoneNumber && errorBorder}`} 
+                      className={`${inputStyles} ${formErrors.phoneNumber && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.phoneNumber && <p className="text-red-500 text-sm mt-1">{formErrors.phoneNumber}</p>}
                   </div>
@@ -529,9 +676,10 @@ export const ReservationPage: React.FC = () => {
                       type="text" 
                       name="carImmatriculation" 
                       value={formData.carImmatriculation} 
-                      onChange={handleInputChange} 
+                      onChange={handleInputChange}
+                      disabled={isLoading}
                       placeholder="12345-123-16" 
-                      className={`${inputStyles} ${formErrors.carImmatriculation && errorBorder}`} 
+                      className={`${inputStyles} ${formErrors.carImmatriculation && errorBorder} ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`} 
                     />
                     {formErrors.carImmatriculation && <p className="text-red-500 text-sm mt-1">{formErrors.carImmatriculation}</p>}
                   </div>
@@ -540,15 +688,15 @@ export const ReservationPage: React.FC = () => {
 
               <button 
                 type="button" 
-                onClick={() => {
-                  if (validateForm()) { 
-                    alert(`Demande soumise! Total: ${totalPrice} DZD.`); 
-                    // Reset form or redirect as needed
-                  }
-                }}
-                className="w-full py-4 text-lg bg-green-500 text-white rounded-lg hover:bg-green-600 font-bold transition-transform transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                onClick={handleSubmit}
+                disabled={isLoading}
+                className={`w-full py-4 text-lg rounded-lg font-bold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isLoading 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-green-500 hover:bg-green-600 transform hover:scale-[1.02] focus:ring-green-500'
+                } text-white`}
               >
-                Confirmer et Envoyer
+                {isLoading ? <LoadingSpinner /> : 'Confirmer et Envoyer'}
               </button>
             </div>
           </div>
