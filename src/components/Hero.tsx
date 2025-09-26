@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Icon } from "../pages/Landing";
-import Airport from "./../assets/airplane.png";
+import Airport from "./../assets/airplane.webp";
 
 export const Hero: React.FC = () => {
     const [showPulse, setShowPulse] = useState<boolean>(false);

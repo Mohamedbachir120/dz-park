@@ -47,10 +47,15 @@ export const Header: React.FC = () => {
       <header className="bg-gray-800 text-white shadow-lg">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center py-4">
-            <a href="/" className="animate-float">
-              <img src={LogoWHite} alt="AeroPark Logo" className='h-10 w-12 md:h-[60px] md:w-[70px]' />
-            </a>
-            
+            <div className='flex'>
+              <a href="/" className="animate-float">
+                <img src={LogoWHite} alt="AeroPark Logo" className='h-10 w-12 md:h-[60px] md:w-[70px]' />
+              </a>
+              <div>
+                <h5>Matar <br /> park</h5>
+              </div>
+
+            </div>
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6">
               <a className="hover:text-indigo-400 transition duration-300 hover:scale-105" href="/">
